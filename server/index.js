@@ -21,7 +21,7 @@ const pgClient = new Pool({
 pgClient.on('error', () => console.log('Lost PG connection'));
 
 pgClient
-  .query('CREATE TABLE IF NOT EXISTS values (number INT)')
+  .query('CREATE TABLE IF NOT EXISTS fibs (number INT)')
   .catch(err => console.log(err));
 
 // Redis Client Setup
@@ -40,9 +40,41 @@ app.get('/', (req, res) => {
 });
 
 app.get('/values/all', async (req, res) => {
-  // const values = await pgClient.query('SELECT * from values');
+   //const values = await pgClient.query('SELECT * from fibs');
 
-  res.send([1, 2, 3]);
+   var data; 
+
+   await pgClient.query('SELECT * from fibs').then(response => { 
+
+        //const fields = res.fields.map(field => field);
+        data = response.rows;
+
+        console.log(data);
+
+
+        res.send(data);
+
+
+   }).finally(() => {
+      //pgClient.end()
+   });
+/*
+  var dummy = [1,2,3];
+
+   dummy.map(x => {
+       console.log(x);
+   });
+*/
+
+   //console.log(data);
+
+//   data.forEach(x => {
+//      console.log('number:' + x.number); 
+//   });
+
+   //console.log(values);
+  //res.send(data);
+  //res.send([1, 2, 3]);
 });
 
 app.get('/values/current', async (req, res) => {
@@ -60,7 +92,7 @@ app.post('/values', async (req, res) => {
 
   redisClient.hset('values', index, 'Nothing yet!');
   redisPublisher.publish('insert', index);
-  pgClient.query('INSERT INTO values(number) VALUES($1)', [index]);
+  pgClient.query('INSERT INTO fibs (number) VALUES ($1)', [index]);
 
   res.send({ working: true });
 });
