@@ -1,3 +1,12 @@
+
+### react application to show how to use redis, postgres, nginx together
+
+also to apply the containization
+
+
+
+---
+
 ### install vim
 ```
 sudo yum install vim -y
@@ -38,3 +47,7 @@ sudo postgresql-setup initdb
 sudo systemctl start postgresql
 
 sudo systemctl enable postgresql
+
+
+
+
