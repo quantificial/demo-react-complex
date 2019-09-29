@@ -8,10 +8,9 @@ class Fib extends Component {
     index: ''
   };
 
-
   componentDidMount() {
-     this.fetchValues();
-     this.fetchIndexes();
+    this.fetchValues();
+    this.fetchIndexes();
   }
 
   async fetchValues() {
@@ -19,62 +18,60 @@ class Fib extends Component {
     this.setState({ values: values.data });
   }
 
-
   async fetchIndexes() {
-    const seenIndexs = await axios.get('/api/values/all');
+    const seenIndexes = await axios.get('/api/values/all');
     this.setState({
       seenIndexes: seenIndexes.data
     });
   }
 
-  handleSubmit = async  (event) => {
+  handleSubmit = async event => {
     event.preventDefault();
-    
+
     await axios.post('/api/values', {
-       index: this.state.index
+      index: this.state.index
     });
-   
-    this.setState({index: ''});
+    this.setState({ index: '' });
   };
 
   renderSeenIndexes() {
-    return this.state.seenIndexs.map(({ number }) => number).join(', ');
+    return this.state.seenIndexes.map(({ number }) => number).join(', ');
   }
-  
-  rendervalues() {
+
+  renderValues() {
     const entries = [];
+
     for (let key in this.state.values) {
       entries.push(
-         <div key={key}>
-            for index {key}, it is calculated {this.state.values[key]}
-         </div>
+        <div key={key}>
+          For index {key} I calculated {this.state.values[key]}
+        </div>
       );
     }
-    
+
     return entries;
   }
 
   render() {
     return (
-       <div>
-          <form onSubmit={this.handleSubmit}>
-             <label>Enter your index:</label>
-             <input value={this.state.index} onChange={event => this.setState(index: event.target.value)}/>
-             <button>Submit</button>
-          </form>
+      <div>
+        <form onSubmit={this.handleSubmit}>
+          <label>Enter your index:</label>
+          <input
+            value={this.state.index}
+            onChange={event => this.setState({ index: event.target.value })}
+          />
+          <button>Submit</button>
+        </form>
 
-          <h3>Indexes I have seen:</h3>
-          {this.renderSeenIndexes()}
+        <h3>Indexes I have seen:</h3>
+        {this.renderSeenIndexes()}
 
-          <h3>Calculated Values:</h3>
-          {this.renderValues()}
-
-       </div>
+        <h3>Calculated Values:</h3>
+        {this.renderValues()}
+      </div>
     );
-
   }
-
 }
 
 export default Fib;
-
