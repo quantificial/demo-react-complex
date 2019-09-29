@@ -4,6 +4,15 @@
 also to apply the containization
 
 
+use travis to build images and then push to docker.io
+
+create aws redis database
+
+create aws postgres database
+
+create the beanstalk and apply the environments, to specifiy the redis and postgres hostname, userid and password
+
+
 
 ---
 
